@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-kafka-admin-client"
+version = "1.0.0"
+description = "Create Kafka Topics and set configuration options with Python"
+
+[tools.setuptools.packages.find]
+where = ["src"]
