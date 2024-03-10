@@ -8,7 +8,7 @@ from confluent_kafka.admin import ConfigSource
 from confluent_kafka.admin import AlterConfigOpType
 from confluent_kafka.admin import ResourceType
 
-from ..lib_topic_config.topic_config import TopicConfig
+from lib_topic_config.topic_config import TopicConfig
 
 
 def get_admin_client() -> AdminClient:
