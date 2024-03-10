@@ -41,16 +41,24 @@ def main():
 
     args = parse_args()
     topic_name = parse_args_get_topic_name(args)
-    megabytes = int(parse_args_get_megabytes(args))
+    megabytes_str = parse_args_get_megabytes(args)
     recreate = parse_args_get_recreate(args)
 
-    mb = 1024 * 1024
-    max_message_bytes = megabytes * mb
 
     topic_config = \
         TopicConfig.default(topic_name=topic_name) \
-            .with_replication_factor(replication_factor=1) \
-            .with_max_message_bytes(max_message_bytes=max_message_bytes)
+            .with_replication_factor(replication_factor=1)
+
+    print(f'{megabytes_str}')
+    if megabytes_str is not None:
+        megabytes = int(megabytes_str)
+
+        mb = 1024 * 1024
+        max_message_bytes = megabytes * mb
+
+        topic_config = \
+            topic_config \
+                .with_max_message_bytes(max_message_bytes=max_message_bytes)
 
     admin_client = get_admin_client()
 

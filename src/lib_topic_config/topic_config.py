@@ -44,9 +44,13 @@ class TopicConfig():
         return topic_config
 
     def to_dict(self) -> dict:
-        return {
+        dictionary = {
             'topic_name': self.topic_name,
             'num_partitions': self.number_of_partitions,
             'replication_factor': self.replication_factor,
-            'max_message_bytes': self.max_message_bytes,
         }
+
+        if self.max_message_bytes is not None:
+            dictionary['max_message_bytes'] = self.max_message_bytes
+
+        return dictionary

@@ -61,8 +61,13 @@ def _create_topic(
     # remaining_config.pop('replication_factor')
 
     remaining_config = {
-        'max.message.bytes': config['max_message_bytes']
+        #'max.message.bytes': config['max_message_bytes']
+        **config,
     }
+
+    remaining_config.pop('topic_name')
+    remaining_config.pop('num_partitions')
+    remaining_config.pop('replication_factor')
 
     # Create Topic
     new_topic = NewTopic(
