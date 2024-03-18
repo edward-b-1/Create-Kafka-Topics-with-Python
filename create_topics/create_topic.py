@@ -16,6 +16,7 @@ def parse_args() -> str:
     parser.add_argument('--server', action='store', metavar='server', dest='server', required=True)
     parser.add_argument('--port', action='store', metavar='port', dest='port', required=True)
     parser.add_argument('--topic', action='store', metavar='topic_name', dest='topic_name', required=True)
+    parser.add_argument('--partitions', action='store', metavar='partitions', dest='partitions', required=False)
     parser.add_argument('--recreate', action=argparse.BooleanOptionalAction, metavar='recreate', dest='recreate', required=False)
     parser.add_argument('--mb', action='store', metavar='megabytes', dest='megabytes', required=False)
 
@@ -34,6 +35,10 @@ def parse_args_get_port(args) -> str:
 def parse_args_get_topic_name(args) -> str:
     topic_name = args.topic_name
     return topic_name
+
+def parse_args_get_partitions(args) -> str:
+    partitions = args.partitions
+    return partitions
 
 def parse_args_get_megabytes(args) -> str|None:
     megabytes = args.megabytes
@@ -54,6 +59,7 @@ def main():
     kafka_port = parse_args_get_port(args)
     bootstrap_servers = f'{kafka_server}:{kafka_port}'
     topic_name = parse_args_get_topic_name(args)
+    partitions_str = parse_args_get_partitions(args)
     megabytes_str = parse_args_get_megabytes(args)
     recreate = parse_args_get_recreate(args)
 
@@ -70,6 +76,13 @@ def main():
         topic_config = \
             topic_config \
                 .with_max_message_bytes(max_message_bytes=max_message_bytes)
+
+    if partitions_str is not None:
+        partitions = int(partitions_str)
+
+        topic_config = \
+            topic_config \
+                .with_num_partitions(number_of_partitions=partitions)
 
     admin_client = get_admin_client(bootstrap_servers=bootstrap_servers)
 
