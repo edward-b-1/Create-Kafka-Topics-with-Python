@@ -11,11 +11,13 @@ from confluent_kafka.admin import ResourceType
 from lib_topic_config.topic_config import TopicConfig
 
 
-def get_admin_client() -> AdminClient:
+def get_admin_client(
+    bootstrap_servers: str
+) -> AdminClient:
 
     config = {
         # TODO: edit this
-        'bootstrap.servers': '192.168.0.239:9092'
+        'bootstrap.servers': bootstrap_servers
     }
 
     admin_client = AdminClient(config)
@@ -68,6 +70,18 @@ def _create_topic(
     remaining_config.pop('topic_name')
     remaining_config.pop('num_partitions')
     remaining_config.pop('replication_factor')
+
+    def key_value_map_lambda(key_value):
+        key, value = key_value
+        mapped_key = key.replace('_', '.')
+        return (mapped_key, value)
+
+    remaining_config = dict(
+        map(
+            key_value_map_lambda,
+            remaining_config.items(),
+        )
+    )
 
     # Create Topic
     new_topic = NewTopic(
