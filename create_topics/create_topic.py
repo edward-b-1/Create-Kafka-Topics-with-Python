@@ -63,9 +63,11 @@ def main():
     megabytes_str = parse_args_get_megabytes(args)
     recreate = parse_args_get_recreate(args)
 
-    topic_config = \
-        TopicConfig.default(topic_name=topic_name) \
-            .with_replication_factor(replication_factor=1)
+    topic_config = (
+        TopicConfig
+        .default(topic_name=topic_name)
+        .with_replication_factor(replication_factor=1)
+    )
 
     if megabytes_str is not None:
         megabytes = int(megabytes_str)
@@ -73,16 +75,18 @@ def main():
         mb = 1024 * 1024
         max_message_bytes = megabytes * mb
 
-        topic_config = \
-            topic_config \
-                .with_max_message_bytes(max_message_bytes=max_message_bytes)
+        topic_config = (
+            topic_config
+            .with_max_message_bytes(max_message_bytes=max_message_bytes)
+        )
 
     if partitions_str is not None:
         partitions = int(partitions_str)
 
-        topic_config = \
-            topic_config \
-                .with_num_partitions(number_of_partitions=partitions)
+        topic_config = (
+            topic_config
+            .with_num_partitions(number_of_partitions=partitions)
+        )
 
     admin_client = get_admin_client(bootstrap_servers=bootstrap_servers)
 

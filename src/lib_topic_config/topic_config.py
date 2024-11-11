@@ -13,10 +13,11 @@ class TopicConfig():
         num_paritions_default = 14
         replication_factor_default = 3
 
-        topic_config = \
-            TopicConfig(topic_name=topic_name) \
-                .with_num_partitions(number_of_partitions=num_paritions_default) \
-                .with_replication_factor(replication_factor=replication_factor_default)
+        topic_config = (
+            TopicConfig(topic_name=topic_name)
+            .with_num_partitions(number_of_partitions=num_paritions_default)
+            .with_replication_factor(replication_factor=replication_factor_default)
+        )
 
         return topic_config
 
